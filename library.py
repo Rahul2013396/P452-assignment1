@@ -137,6 +137,43 @@ def ConjGrad(A,b,x = None, tol = 1e-4, max_iter = 1000, plot= False):
         plt.clf()
     return x
 
+def ConjGrad_onfly(f,b,N,x = None, tol = 1e-4, max_iter = 100, plot= False):
+    n = N*N
+    if x is None: x = np.ones(n)
+
+    r = b - dot(f,x,N)
+    d = r
+    aarr = []
+    karr = []
+    count = 0
+    while (np.dot(r,r)>tol and count<max_iter):
+
+        a = np.dot(r,r)
+        aarr.append(a)       
+        karr.append(count)
+        a = (a)/(np.dot(d,dot(f,d,N)))
+        x += a*d
+        r -= a*dot(f,d,N)
+
+        b = np.dot(r,r)/a
+        d = r + b*d
+        count += 1
+
+    if(plot==True):
+        plt.xlabel('iteration')
+        plt.ylabel('residual')
+        plt.plot(karr,aarr)
+        plt.savefig('conj_onfly.png')
+        plt.clf()
+    return x
+
+
+def dot(f,v,N):
+    x = np.zeros(len(v))
+    for i in range(len(v)):
+        for j in range(len(v)):
+            x[i] = f(i,j,N)*v[j]
+    return x
 
 
 def Inverse(matrix,tol,plot = False ,xsolvername = "JacobiInv"):

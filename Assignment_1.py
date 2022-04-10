@@ -3,6 +3,8 @@ from copy import deepcopy
 import numpy as np
 
 
+#Plot variable in different functions is for plotting residual vs iteration for that method
+
 # Q1
 a,b,c,d,e,f = np.loadtxt("Mat_A1.txt" , unpack = True)
 matrix1=[]
@@ -110,3 +112,33 @@ print(f'Conjugate gradient answer {ans25}')
 
 #Q3
 
+def Fly_func(x,y, N, m = 0.2):
+    # Creating lattice coordinates from lattice numbers
+    i1 = x%N
+    j1 = x//N
+    i2 = y%N
+    j2 = y//N
+
+    # Condition for diagonal term
+    if (x==y): return (m**2-1)
+
+    # Condition for interaction terms
+    if(((i1+1)%N,j1)==(i2,j2)): return 0.5
+    if(((i1-1)%N,j1)==(i2,j2)): return 0.5
+    if((i1,(j1+1)%N)==(i2,j2)): return 0.5
+    if((i1,(j1-1)%N)==(i2,j2)): return 0.5
+
+    return 0
+
+
+
+N = 20
+n = N*N
+I = np.eye(n)
+Inverse = np.zeros((n,n))
+
+resl = []
+for i in range(n):
+    inv = library.ConjGrad_onfly(Fly_func, I[i],N, tol = 1e-4, max_iter = 20 ,plot=False)
+    Inverse[:,i] = inv
+    
