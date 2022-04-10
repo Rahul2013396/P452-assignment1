@@ -142,7 +142,7 @@ def ConjGrad_onfly(f,b,N,x = None, tol = 1e-4, max_iter = 100, plot= False):
     if x is None: x = np.ones(n)
 
     r = b - dot(f,x,N)
-    d = r
+    d = deepcopy(r)
     aarr = []
     karr = []
     count = 0
@@ -172,7 +172,7 @@ def dot(f,v,N):
     x = np.zeros(len(v))
     for i in range(len(v)):
         for j in range(len(v)):
-            x[i] = f(i,j,N)*v[j]
+            x[i] += f(i,j,N)*v[j]
     return x
 
 
