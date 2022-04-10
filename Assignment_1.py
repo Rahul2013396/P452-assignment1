@@ -141,4 +141,4 @@ resl = []
 for i in range(n):
     inv = library.ConjGrad_onfly(Fly_func, I[i],N, tol = 1e-4, max_iter = 20 ,plot=False)
     Inverse[:,i] = inv
-    
+print(Inverse)    
